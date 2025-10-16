@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jisoohue</title>
+  <link rel="stylesheet" href="./css/main.css">
+  <style>
+    .scroll-btn {
+      position: fixed;
+      right: 20px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 1px solid #fff;
+      cursor: pointer;
+      color: #fff;
+      font-weight: bold;
+      font-size: 15px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      background-color: #687c2f;
+    }
+    .scroll-btn:hover {
+      transform: scale(1.05);
+    }
+    #topBtn {
+      bottom: 80px;
+    }
+    #bottomBtn {
+      bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrap" style="height:2000px;">
+    <img src="./img/jisihu.jpg" alt="jisihu_bibx">
+  </div>
+
+  <!-- 버튼 -->
+  <button id="topBtn" class="scroll-btn">▲</button>
+  <button id="bottomBtn" class="scroll-btn">▼</button>
+
+  <script>
+    // 버튼 기능
+    const topBtn = document.getElementById("topBtn");
+    const bottomBtn = document.getElementById("bottomBtn");
+
+    topBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    bottomBtn.addEventListener("click", () => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    });
+
+    // 스크롤에 따라 색상 변경
+    window.addEventListener("scroll", () => {
+      const scroll = window.scrollY;
+      const height = document.body.scrollHeight - window.innerHeight;
+      const ratio = Math.min(scroll / height, 1);
+
+      const colors = [
+        [145, 155, 104], // #919B68
+        [91, 96, 60],    // #5B603C
+        [67, 74, 41],    // #434A29
+        [48, 53, 25]     // #303519
+      ];
+
+      const total = colors.length - 1;
+      const index = Math.min(Math.floor(ratio * total), total - 1);
+      const localRatio = (ratio * total) - index;
+
+      const start = colors[index];
+      const end = colors[index + 1];
+
+      const r = Math.round(start[0] + (end[0] - start[0]) * localRatio);
+      const g = Math.round(start[1] + (end[1] - start[1]) * localRatio);
+      const b = Math.round(start[2] + (end[2] - start[2]) * localRatio);
+
+      document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    });
+  </script>
+</body>
+</html>
